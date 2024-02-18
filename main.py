@@ -9,7 +9,7 @@ app = Flask(__name__) # setup initial flask app; gets called throughout in route
 pgSQL_connect = {
     'dbname':"gis5572",
     'user':"postgres",
-    'password':"dcu0cme.mpy@XND6wga",
+    'password':"**",
     'host':"35.224.112.3"
 }
 

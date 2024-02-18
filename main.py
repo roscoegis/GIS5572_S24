@@ -13,7 +13,7 @@ def hello_world():
 
 @app.route("/hello")
 def hello():
-    return "hello, Shana! Can you make this work?"
+    return "hello, Shana! Now let's see if this works. One more time. 8:00 on Saturday night."
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

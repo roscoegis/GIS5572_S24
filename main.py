@@ -2,66 +2,54 @@ import psycopg2
 from flask import Flask, jsonify
 import json
 
+# Creates the Flask app that is noted in the Dockerfile
 app = Flask(__name__) # setup initial flask app; gets called throughout in routes
 
-# Connect to the PostgreSQL database
+ 
+ # Creates the index route  - main route when you go to the URL
+app.route('/') #python decorator
+def index():
+    return "The API works! "
 
-pgSQL_connect = {
-    'dbname':"gis5572",
-    'user':"**",
-    'password':"**",
-    'host':"**"
-}
+# create the data route - where you get the GeoJSON data
+app.route('/blegenhll', methods=['GET'] )
+def blegen():
+# create connection to the database
+conn = psycopg2.connect(
+    host = os.environ.get("DB_HOST"),
+    database = os.environ.get("DB_NAME"),
+    user = os.environ.get("DB_USER"),
+    password = os.environ.get("DB_PASS"),
+    port = os.environ.get("DB_PORT"),
+)
+    
+
+    # Execute a query to retrieve the polygon as GeoJSON
+
+with conn.cursor() as cur:
+    query = """
+    SELECT JSON_BUILD_OBJECT(
+        'type', 'FeatureCollection',
+        'features', JSON_AGG(
+            ST_AsGEOJSON(blegenhll.*)::json
+            )
+        )
+    FROM blegenhll;
+"""
 
 
-@app.route('/') #python decorator 
-def hello_world(): #function that app.route decorator references
-  response = hello()
-  return response
+    cur.execute(query)
+    data = cur.fetchall()   
 
-def hello():
-  return "GIS 5572 Lab 1"
+    # Close the database connection
 
-# Route to retrieve polygon as GeoJSON
-@app.route('/getgeojson', methods=['GET'])
-def get_geojson():
-    try:
-        # Connect to the database
-        connection = psycopg2.connect(**pgSQL_connect)
-        cursor = connection.cursor()
+conn.close()
 
-        # Query to retrieve polygon as GeoJSON
-        query = "SELECT ST_AsGeoJSON(geometry) FROM polygon_lab1;"
-        cursor.execute(query)
-        rows = cursor.fetchall()
+# Return the data as GeoJSON
+return data[0][0]
+   
 
-        # Close database connection
-        cursor.close()
-        connection.close()
-
-        # Prepare GeoJSON response
-        features = []
-        for row in rows:
-            feature = {
-                "type": "Feature",
-                "geometry": json.loads(row[0]),
-                "properties": {}
-            }
-            features.append(feature)
-
-        feature_collection = {
-            "type": "FeatureCollection",
-            "features": features
-        }
-
-        # Return GeoJSON response
-        return jsonify(feature_collection)
-
-    except psycopg2.Error as e:
-        return jsonify({"error": "Database error: " + str(e)}), 500
+# runs the app on the specified host and port
 
 if __name__ == "__main__":
-    app.run(
-      #debug=True, #shows errors 
-      host='0.0.0.0', #tells app to run exposed to outside world
-      port=5000)
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080))) 

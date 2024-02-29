@@ -1,4 +1,6 @@
-Flask==2.1.0
-gunicorn==20.1.0
-sqlalchemy==2.0.3
-numpy==1.24
+Flask==3.0.2
+gunicorn==21.2.0
+sqlalchemy==2.0.27
+numpy==1.26.4
+psychopg2-binary==2.9.9
+```

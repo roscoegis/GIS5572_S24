@@ -1,26 +1,27 @@
 import psycopg2
-from flask import Flask, jsonify
+from flask import Flask
 import json
+import os
 
 # Creates the Flask app that is noted in the Dockerfile
 app = Flask(__name__) # setup initial flask app; gets called throughout in routes
 
  
  # Creates the index route  - main route when you go to the URL
-app.route('/') #python decorator
+@app.route('/') #python decorator
 def index():
     return "The API works! "
 
 # create the data route - where you get the GeoJSON data
-app.route('/blegenhll', methods=['GET'] )
+@app.route('/blegenhll', methods=['GET'] )
 def blegen():
-# create connection to the database
-conn = psycopg2.connect(
-    host = os.environ.get("DB_HOST"),
-    database = os.environ.get("DB_NAME"),
-    user = os.environ.get("DB_USER"),
-    password = os.environ.get("DB_PASS"),
-    port = os.environ.get("DB_PORT"),
+    # create connection to the database
+    conn = psycopg2.connect(
+        host = os.environ.get("DB_HOST"),
+        database = os.environ.get("DB_NAME"),
+        user = os.environ.get("DB_USER"),
+        password = os.environ.get("DB_PASS"),
+        port = os.environ.get("DB_PORT"),
 )
     
 
@@ -50,6 +51,6 @@ return data[0][0]
    
 
 # runs the app on the specified host and port
-
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080))) 
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+

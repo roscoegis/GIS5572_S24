@@ -27,16 +27,16 @@ def blegen():
 
     # Execute a query to retrieve the polygon as GeoJSON
 
-with conn.cursor() as cur:
-    query = """
-    SELECT JSON_BUILD_OBJECT(
-        'type', 'FeatureCollection',
-        'features', JSON_AGG(
-            ST_AsGEOJSON(blegenhll.*)::json
+    with conn.cursor() as cur:
+        query = """
+        SELECT JSON_BUILD_OBJECT(
+            'type', 'FeatureCollection',
+            'features', JSON_AGG(
+                ST_AsGEOJSON(blegenhll.*)::json
             )
         )
-    FROM blegenhll;
-"""
+        FROM blegenhll;
+        """
 
 
     cur.execute(query)

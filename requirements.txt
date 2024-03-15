@@ -2,4 +2,4 @@ Flask==3.0.2
 gunicorn==21.2.0
 sqlalchemy==2.0.27
 numpy==1.26.4
-psychopg2-binary==2.9.9
+psycopg2-binary==2.9.9

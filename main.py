@@ -32,10 +32,10 @@ def blegen():
         SELECT JSON_BUILD_OBJECT(
             'type', 'FeatureCollection',
             'features', JSON_AGG(
-                ST_AsGEOJSON(blegenhll.*)::json
+                ST_AsGEOJSON(blegenhall.*)::json
             )
         )
-        FROM blegenhll;
+        FROM blegenhall;
         """
 
 
@@ -44,10 +44,10 @@ def blegen():
 
     # Close the database connection
 
-conn.close()
+    conn.close()
 
 # Return the data as GeoJSON
-return data[0][0]
+    return data[0][0]
    
 
 # runs the app on the specified host and port

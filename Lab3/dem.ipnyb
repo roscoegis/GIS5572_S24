@@ -1,0 +1,7 @@
+import requests
+import zipfile
+import os
+
+workspace = r'C:\School\GIS 5572\Local\Lab 2\data'
+
+land_cover_resource = 'https://resources.gisdata.mn.gov/pub/gdrs/data/pub/us_mn_state_dnr/elev_30m_digital_elevation_model/fgdb_elev_30m_digital_elevation_model.zip'

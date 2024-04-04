@@ -13,7 +13,7 @@ def index():
     return "The API works! "
 
 # create the data route - where you get the GeoJSON data
-@app.route('/blegenhll', methods=['GET'] )
+@app.route('/exploretable1', methods=['GET'] )
 def blegen():
     # create connection to the database
     conn = psycopg2.connect(
@@ -32,10 +32,10 @@ def blegen():
         SELECT JSON_BUILD_OBJECT(
             'type', 'FeatureCollection',
             'features', JSON_AGG(
-                ST_AsGEOJSON(blegenhall.*)::json
+                ST_AsGEOJSON(exploretable1.*)::json
             )
         )
-        FROM blegenhall;
+        FROM exploretable1;
         """
 
 

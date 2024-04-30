@@ -13,8 +13,8 @@ def index():
     return "The API works! "
 
 # create the data route - where you get the GeoJSON data
-@app.route('/exploretable1', methods=['GET'] )
-def blegen():
+@app.route('/BlockGroupselection_SummarizeWithin', methods=['GET'] )
+def block():
     # create connection to the database
     conn = psycopg2.connect(
         host = os.environ.get("DB_HOST"),
